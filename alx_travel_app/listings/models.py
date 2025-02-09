@@ -42,3 +42,15 @@ class Review(models.Model):
         ])
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+class Payment(models.Model):
+    class PaymentStatus(models.TextChoices):
+        SUCCESS = 'success'
+        FAILURE = 'failure'
+    payment_id = models.UUIDField(primary_key=True, default=uuid4)
+    amount = models.DecimalField(decimal_places=2)
+    booking_id = models.ForeignKey('Booking', models.SET_NULL)
+    user_id = models.ForeignKey('User', models.CASCADE)
+    transaction_id = models.CharField(max_length=10)
+    status = models.CharField(max_length=15, choices=PaymentStatus)
